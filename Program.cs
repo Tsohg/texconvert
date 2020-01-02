@@ -3,15 +3,24 @@ using System.Collections.Generic;
 using CSharpImageLibrary;
 using System.Windows.Media.Imaging;
 using System;
-using System.Drawing;
-using System.Drawing.Imaging;
 
-//Takes a directory as input, converts MWW's dds textures to png format, outputs to the given directory.
-//Specifically hunts for .texture from DiLemming's unbundler in the input directory.
+/// <summary>
+/// Takes a directory as input, converts MWW's dds textures to png format, outputs to the given directory.
+/// Specifically hunts for .dds files output from DiLemming's unbundler in the input directory.
+/// </summary>
 namespace texconvert
 {
     class Program
     {
+        /// <summary>
+        /// Accepts 2 arguments only.
+        /// Argument 1: The full path of the directory containing the .dds files.
+        /// Argument 2: The full path to the directory in which the .png files will be stored after conversion.
+        /// 
+        /// Example usage:
+        /// full\path\here\texconvert.exe full\path\here\mww_textures\ddsDirectory full\path\here\mww_textures\pngOutputDirectory
+        /// </summary>
+        /// <param name="args">Accepts 2 full directory paths for input and output respectively.</param>
         static void Main(string[] args)
         {
             if(args.Length < 2)
@@ -33,7 +42,7 @@ namespace texconvert
                 FileInfo[] fi = di.GetFiles();
                 foreach (FileInfo f in fi)
                 {
-                    if (Path.GetExtension(Path.Combine(inPath, f.Name)) != ".texture")
+                    if (Path.GetExtension(Path.Combine(inPath, f.Name)) != ".dds")
                         continue;
                     files.Add(Path.Combine(inPath, f.Name));
                 }
@@ -51,16 +60,15 @@ namespace texconvert
                 Console.Out.WriteLine(e.Message);
             }
         }
-        //public void ConvertFile(string file, string inPath, string outPath, ref int index, int total)
-        //{
-        //    Console.Out.WriteLine("Converting: " + Path.GetFileName(file) + " " + index + "\\" + total);
-        //    ImageEngineImage imi = new ImageEngineImage(Path.Combine(inPath, file));
-        //    FileStream fs = new FileStream(Path.Combine(outPath, Path.ChangeExtension(Path.GetFileName(file), ".png")), FileMode.Create);
-        //    ImageFormats.ImageEngineFormatDetails details = new ImageFormats.ImageEngineFormatDetails(ImageEngineFormat.PNG);
-        //    imi.Save(fs, details, MipHandling.Default);
-        //    fs.Close();
-        //}
 
+        /// <summary>
+        /// Converts a single .dds file to .png format.
+        /// </summary>
+        /// <param name="file">Full path of the file.</param>
+        /// <param name="inPath">Full input directory path.</param>
+        /// <param name="outPath">Full output directory path.</param>
+        /// <param name="index">Integer label. Start at i = 1.</param>
+        /// <param name="total">Total number of files to be converted.</param>
         public void ConvertFile(string file, string inPath, string outPath, ref int index, int total)
         {
             Console.Out.WriteLine("Converting: " + Path.GetFileName(file) + " " + index + "\\" + total);
@@ -72,40 +80,5 @@ namespace texconvert
             enc.Save(fs);
             fs.Close();
         }
-
-        //public void ConvertFile(string file, string inPath, string outPath, ref int index, int total)
-        //{
-        //    Console.Out.WriteLine("Converting: " + Path.GetFileName(file) + " " + index + "\\" + total);
-        //    ImageEngineImage imi = new ImageEngineImage(Path.Combine(inPath, file));
-        //    BitmapSource bmps = imi.GetWPFBitmap();
-        //    JpegBitmapEncoder enc = new JpegBitmapEncoder();
-        //    enc.Frames.Add(BitmapFrame.Create(bmps));
-        //    FileStream fs = new FileStream(Path.Combine(outPath, Path.ChangeExtension(Path.GetFileName(file), ".jpg")), FileMode.Create);
-        //    enc.Save(fs);
-        //    fs.Close();
-        //}
-
-        //public void ConvertFile(string file, string inPath, string outPath, ref int index, int total)
-        //{
-        //    Console.Out.WriteLine("Converting: " + Path.GetFileName(file) + " " + index + "\\" + total);
-        //    ImageEngineImage imi = new ImageEngineImage(Path.Combine(inPath, file));
-        //    BitmapSource bmps = imi.GetWPFBitmap();
-        //    Bitmap bmp = BitmapSourceToBitmap(bmps);
-        //    //bmp.MakeTransparent(); //testing this method of transparency
-        //    PngBitmapEncoder enc = new PngBitmapEncoder();
-        //    FileStream fs = new FileStream(Path.Combine(outPath, Path.ChangeExtension(Path.GetFileName(file), ".png")), FileMode.Create);
-        //    bmp.Save(fs, ImageFormat.Png);
-        //    fs.Close();
-        //}
-
-        //private Bitmap BitmapSourceToBitmap(BitmapSource bmps)
-        //{
-        //    BitmapEncoder enc = new BmpBitmapEncoder();
-        //    enc.Frames.Add(BitmapFrame.Create(bmps));
-        //    MemoryStream stream = new MemoryStream();
-        //    enc.Save(stream);
-        //    Bitmap res = new Bitmap(stream);
-        //    return res;
-        //}
     }
 }
