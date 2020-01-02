@@ -21,11 +21,11 @@ namespace texconvert
             string inPath = args[0];
             string outPath = args[1];
 
-            if (!Directory.Exists(outPath))
-                Directory.CreateDirectory(outPath);
-
             try
             {
+                if (!Directory.Exists(outPath))
+                    Directory.CreateDirectory(outPath);
+
                 List<string> files = new List<string>();
                 DirectoryInfo di = new DirectoryInfo(inPath);
                 FileInfo[] fi = di.GetFiles();
