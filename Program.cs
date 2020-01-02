@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using CSharpImageLibrary;
 using System.Windows.Media.Imaging;
 using System;
+using System.Drawing;
+using System.Drawing.Imaging;
 
-//Takes a directory as input, converts MWW's dds textures to jpeg format, outputs to the given directory.
+//Takes a directory as input, converts MWW's dds textures to png format, outputs to the given directory.
 //Specifically hunts for .texture from DiLemming's unbundler in the input directory.
 namespace texconvert
 {
@@ -49,17 +51,52 @@ namespace texconvert
                 Console.Out.WriteLine(e.Message);
             }
         }
-        //TODO: remove reference to index, remove index--, only add to the files list if the extension is .texture.
+
         public void ConvertFile(string file, string inPath, string outPath, ref int index, int total)
         {
             Console.Out.WriteLine("Converting: " + Path.GetFileName(file) + " " + index + "\\" + total);
             ImageEngineImage imi = new ImageEngineImage(Path.Combine(inPath, file));
             BitmapSource bmps = imi.GetWPFBitmap();
-            JpegBitmapEncoder enc = new JpegBitmapEncoder();
+            PngBitmapEncoder enc = new PngBitmapEncoder();
             enc.Frames.Add(BitmapFrame.Create(bmps));
-            FileStream fs = new FileStream(Path.Combine(outPath, Path.ChangeExtension(Path.GetFileName(file), ".jpg")), FileMode.Create);
+            FileStream fs = new FileStream(Path.Combine(outPath, Path.ChangeExtension(Path.GetFileName(file), ".png")), FileMode.Create);
             enc.Save(fs);
             fs.Close();
         }
+
+        //public void ConvertFile(string file, string inPath, string outPath, ref int index, int total)
+        //{
+        //    Console.Out.WriteLine("Converting: " + Path.GetFileName(file) + " " + index + "\\" + total);
+        //    ImageEngineImage imi = new ImageEngineImage(Path.Combine(inPath, file));
+        //    BitmapSource bmps = imi.GetWPFBitmap();
+        //    JpegBitmapEncoder enc = new JpegBitmapEncoder();
+        //    enc.Frames.Add(BitmapFrame.Create(bmps));
+        //    FileStream fs = new FileStream(Path.Combine(outPath, Path.ChangeExtension(Path.GetFileName(file), ".jpg")), FileMode.Create);
+        //    enc.Save(fs);
+        //    fs.Close();
+        //}
+
+        //public void ConvertFile(string file, string inPath, string outPath, ref int index, int total)
+        //{
+        //    Console.Out.WriteLine("Converting: " + Path.GetFileName(file) + " " + index + "\\" + total);
+        //    ImageEngineImage imi = new ImageEngineImage(Path.Combine(inPath, file));
+        //    BitmapSource bmps = imi.GetWPFBitmap();
+        //    Bitmap bmp = BitmapSourceToBitmap(bmps);
+        //    //bmp.MakeTransparent(); //testing this method of transparency
+        //    PngBitmapEncoder enc = new PngBitmapEncoder();
+        //    FileStream fs = new FileStream(Path.Combine(outPath, Path.ChangeExtension(Path.GetFileName(file), ".png")), FileMode.Create);
+        //    bmp.Save(fs, ImageFormat.Png);
+        //    fs.Close();
+        //}
+
+        //private Bitmap BitmapSourceToBitmap(BitmapSource bmps)
+        //{
+        //    BitmapEncoder enc = new BmpBitmapEncoder();
+        //    enc.Frames.Add(BitmapFrame.Create(bmps));
+        //    MemoryStream stream = new MemoryStream();
+        //    enc.Save(stream);
+        //    Bitmap res = new Bitmap(stream);
+        //    return res;
+        //}
     }
 }
