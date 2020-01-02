@@ -35,7 +35,7 @@ namespace texconvert
                 int index = 1;
                 foreach (string file in files)
                 {
-                    p.ConvertFile(file, inPath, outPath, index, files.Count);
+                    p.ConvertFile(file, inPath, outPath, ref index, files.Count);
                     index++;
                 }
                 Console.Out.WriteLine("Done.");
@@ -46,10 +46,13 @@ namespace texconvert
             }
         }
 
-        public void ConvertFile(string file, string inPath, string outPath, int index, int total)
+        public void ConvertFile(string file, string inPath, string outPath, ref int index, int total)
         {
             if (Path.GetExtension(file) != ".texture")
+            {
+                index--;
                 return;
+            }
             Console.Out.WriteLine("Converting: " + Path.GetFileName(file) + " " + index + "\\" + total);
             ImageEngineImage imi = new ImageEngineImage(Path.Combine(inPath, file));
             BitmapSource bmps = imi.GetWPFBitmap();
