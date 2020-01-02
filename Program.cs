@@ -51,12 +51,21 @@ namespace texconvert
                 Console.Out.WriteLine(e.Message);
             }
         }
+        //public void ConvertFile(string file, string inPath, string outPath, ref int index, int total)
+        //{
+        //    Console.Out.WriteLine("Converting: " + Path.GetFileName(file) + " " + index + "\\" + total);
+        //    ImageEngineImage imi = new ImageEngineImage(Path.Combine(inPath, file));
+        //    FileStream fs = new FileStream(Path.Combine(outPath, Path.ChangeExtension(Path.GetFileName(file), ".png")), FileMode.Create);
+        //    ImageFormats.ImageEngineFormatDetails details = new ImageFormats.ImageEngineFormatDetails(ImageEngineFormat.PNG);
+        //    imi.Save(fs, details, MipHandling.Default);
+        //    fs.Close();
+        //}
 
         public void ConvertFile(string file, string inPath, string outPath, ref int index, int total)
         {
             Console.Out.WriteLine("Converting: " + Path.GetFileName(file) + " " + index + "\\" + total);
             ImageEngineImage imi = new ImageEngineImage(Path.Combine(inPath, file));
-            BitmapSource bmps = imi.GetWPFBitmap();
+            BitmapSource bmps = imi.GetWPFBitmap(0, true);
             PngBitmapEncoder enc = new PngBitmapEncoder();
             enc.Frames.Add(BitmapFrame.Create(bmps));
             FileStream fs = new FileStream(Path.Combine(outPath, Path.ChangeExtension(Path.GetFileName(file), ".png")), FileMode.Create);
