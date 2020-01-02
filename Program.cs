@@ -10,8 +10,6 @@ namespace texconvert
 {
     class Program
     {
-
-
         static void Main(string[] args)
         {
             if(args.Length < 2)
@@ -22,6 +20,9 @@ namespace texconvert
 
             string inPath = args[0];
             string outPath = args[1];
+
+            if (!Directory.Exists(outPath))
+                Directory.CreateDirectory(outPath);
 
             try
             {
