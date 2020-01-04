@@ -70,7 +70,7 @@ namespace texconvert
                     index++;
                 }
                 Console.Out.WriteLine("Done.");
-                Console.Read(); //debug purposes
+                //Console.Read(); //debug purposes
             }
             catch (Exception e)
             {
