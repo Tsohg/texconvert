@@ -123,6 +123,7 @@ namespace texconvert
                 try
                 {
                     Console.Out.WriteLine("Retrying Conversion: " + Path.GetFileName(file) + " " + index + "\\" + total);
+                    fs = new FileStream(Path.Combine(outPath + "_ddsArgb8_troublemaker", Path.ChangeExtension(Path.GetFileName(file), ".dds")), FileMode.Create);
                     details = new ImageFormats.ImageEngineFormatDetails(ImageEngineFormat.DDS_ARGB_8);
                     imi.Save(fs, details, MipHandling.Default, 0, 0, false);
                     Console.Out.WriteLine("Retry successful.");
