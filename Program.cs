@@ -20,9 +20,9 @@ namespace texconvert
         /// [Argument 3]: rev
         /// rev = reverse. Used to indicate that you want to turn convert .png files to .dds format.
         /// Example usage:
-        /// full\path\here\texconvert.exe full\path\here\mww_textures\ddsDirectory full\path\here\mww_textures\pngOutputDirectory
+        /// full\path\here\texconvert.exe full\path\here\mww_textures\ddsDirectory full\path\here\mww_textures\pngOutputDirectory [m]
         /// 
-        /// full\path\here\texconvert.exe full\path\here\mww_textures\pngDirectory full\path\here\mww_textures\ddsOutputDirectory rev
+        /// full\path\here\texconvert.exe full\path\here\mww_textures\pngDirectory full\path\here\mww_textures\ddsOutputDirectory rev [m]
         /// </summary>
         /// <param name="args">Accepts 2 full directory paths for input and output respectively.</param>
         static void Main(string[] args)
@@ -37,7 +37,7 @@ namespace texconvert
             string outPath = args[1];
             string target;
             ConversionDel conversion;
-
+            
             if (args.Length == 3 && args[2] == "rev") //reverse. going from png to dds
             {
                 conversion = p.ConvertPngToDds;
@@ -47,6 +47,7 @@ namespace texconvert
             {
                 conversion = p.ConvertDdsToPng;
                 target = ".dds";
+                //target = ".texture"; //debug
             }
 
             try
@@ -92,10 +93,24 @@ namespace texconvert
         {
             Console.Out.WriteLine("Converting: " + Path.GetFileName(file) + " " + index + "\\" + total);
             ImageEngineImage imi = new ImageEngineImage(Path.Combine(inPath, file));
+
+            //debug
+            //formats.Add(imi.Format);
+
             BitmapSource bmps = imi.GetWPFBitmap(0, true);
             PngBitmapEncoder enc = new PngBitmapEncoder();
             enc.Frames.Add(BitmapFrame.Create(bmps));
-            FileStream fs = new FileStream(Path.Combine(outPath, Path.ChangeExtension(Path.GetFileName(file), ".png")), FileMode.Create);
+            //FileStream fs = new FileStream(Path.Combine(outPath, Path.ChangeExtension(Path.GetFileName(file), ".png")), FileMode.Create);
+
+            //String manipulation to remove the .target extension, insert the dds format delimited by '-', and append the new .png extension.
+            string noExt = Path.ChangeExtension(file, "");
+            noExt = noExt.Remove(noExt.Length - 1);
+            string fNewName = Path.GetFileName(noExt) + "-" + imi.Format.ToString();
+            string pathNew = Path.Combine(outPath, fNewName);
+            string extNew = pathNew += ".png";
+
+            //save file.
+            FileStream fs = new FileStream(extNew, FileMode.Create);
             enc.Save(fs);
             fs.Close();
         }
@@ -110,65 +125,34 @@ namespace texconvert
         /// <param name="total">Total number of files to be converted.</param>
         public void ConvertPngToDds(string file, string inPath, string outPath, ref int index, int total)
         {
-            FileStream fs = new FileStream(Path.Combine(outPath, Path.ChangeExtension(Path.GetFileName(file), ".dds")), FileMode.Create);
-            ImageFormats.ImageEngineFormatDetails details = new ImageFormats.ImageEngineFormatDetails(ImageEngineFormat.DDS_DXT5);
-            ImageEngineImage imi = new ImageEngineImage(Path.Combine(inPath, file));
-            try
+            //get data about file..."D:\\msys2\\home\\Nathan\\dbg\\00004d824c7204b6f7-DDS_ARGB_8.png"
+            string name = Path.GetFileName(file);
+            string[] details = name.Split('-');
+            if (details.Length > 2) throw new Exception("Additional details detected.");
+            ImageFormats.ImageEngineFormatDetails imageDetails;
+            switch(details[1].Split('.')[0]) //A bit of a complicated way to only look at the part without file extension...
             {
-                Console.Out.WriteLine("Converting: " + Path.GetFileName(file) + " " + index + "\\" + total);
-                imi.Save(fs, details, MipHandling.Default, 0, 0, false);
+                case "DDS_ARGB_8":
+                    imageDetails = new ImageFormats.ImageEngineFormatDetails(ImageEngineFormat.DDS_ARGB_8);
+                    break;
+                case "DDS_G16_R16":
+                    imageDetails = new ImageFormats.ImageEngineFormatDetails(ImageEngineFormat.DDS_G16_R16);
+                    break;
+                case "DDS_DXT1":
+                    imageDetails = new ImageFormats.ImageEngineFormatDetails(ImageEngineFormat.DDS_DXT1);
+                    break;
+                case "DDS_DXT5":
+                default: //we don't know what to do here...so we just assume DXT5.
+                    imageDetails = new ImageFormats.ImageEngineFormatDetails(ImageEngineFormat.DDS_DXT5);
+                    break;
             }
-            catch (Exception e)
-            {
-                try
-                {
-                    Console.Out.WriteLine("Retrying Conversion: " + Path.GetFileName(file) + " " + index + "\\" + total);
-                    fs = new FileStream(Path.Combine(outPath + "_ddsArgb8_troublemaker", Path.ChangeExtension(Path.GetFileName(file), ".dds")), FileMode.Create);
-                    details = new ImageFormats.ImageEngineFormatDetails(ImageEngineFormat.DDS_ARGB_8);
-                    imi.Save(fs, details, MipHandling.Default, 0, 0, false);
-                    Console.Out.WriteLine("Retry successful.");
-                }
-                catch (Exception e2)
-                {
-                    Console.Out.WriteLine("Error converting file: " + Path.GetFileName(file) + " -> " + e2.Message);
-                    return;
-                }
-                finally
-                {
-                    fs.Close();
-                }
-            }
-            finally
-            {
-                fs.Close();
-            }
+
+            //we have already stripped metadata in split. Begin to return it to dds with the stripped metadata.
+            FileStream fs = new FileStream(Path.Combine(outPath, Path.ChangeExtension(details[0], ".dds")), FileMode.Create);
+            ImageEngineImage imi = new ImageEngineImage(Path.Combine(inPath, name));
+            Console.Out.WriteLine("Converting: " + Path.GetFileName(file) + " " + index + "\\" + total);
+            imi.Save(fs, imageDetails, MipHandling.Default, 0, 0, false);
+            fs.Close();
         }
-
-        //public void ConvertPngToDds(string file, string inPath, string outPath, ref int index, int total)
-        //{
-        //    FileStream fs = new FileStream(Path.Combine(outPath, Path.ChangeExtension(Path.GetFileName(file), ".dds")), FileMode.Create);
-        //    try
-        //    {
-        //        Console.Out.WriteLine("Converting: " + Path.GetFileName(file) + " " + index + "\\" + total);
-        //        ImageEngineImage imi = new ImageEngineImage(Path.Combine(inPath, file));
-        //        ImageFormats.ImageEngineFormatDetails details;
-
-        //        //Handling errors for when the width and height are not intervals of 4.
-        //        if (imi.Width % 4 == 0 && imi.Height % 4 == 0)
-        //            details = new ImageFormats.ImageEngineFormatDetails(ImageEngineFormat.DDS_DXT5); //testing different dxts
-        //        else
-        //            details = new ImageFormats.ImageEngineFormatDetails(ImageEngineFormat.DDS_CUSTOM);
-        //        imi.Save(fs, details, MipHandling.Default, 0, 0, false);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Console.Out.WriteLine("Error converting file: " + Path.GetFileName(file) + " -> " + e.Message);
-        //        return;
-        //    }
-        //    finally
-        //    {
-        //        fs.Close();
-        //    }
-        //}
     }
 }

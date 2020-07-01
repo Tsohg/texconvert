@@ -222,14 +222,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="texconvert.exe" size="8128">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="texconvert.exe" size="8640">
       <assemblyIdentity name="texconvert" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>JyircYyZnWNHpwXmqYl9mUC5qx/HwiYDyuV8KoGtMOQ=</dsig:DigestValue>
+        <dsig:DigestValue>6PqThdBy5C4p5RuR9encUOCUUZJUABXrwJMOwfEY+Ns=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

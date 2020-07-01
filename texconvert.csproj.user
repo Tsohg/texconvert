@@ -14,6 +14,10 @@
     <EnableSecurityDebugging>false</EnableSecurityDebugging>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <StartArguments>D:\mww_textures\mww_texture_pngalp D:\mww_textures\mww_texture_ddsrev rev</StartArguments>
+    <StartArguments>"D:\msys2\home\Nathan\dbg\\" "D:\msys2\home\Nathan\dbgPngToDDS\\" rev</StartArguments>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <StartArguments>
+    </StartArguments>
   </PropertyGroup>
 </Project>
