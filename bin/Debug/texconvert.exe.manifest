@@ -229,7 +229,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>ICmQgrVAJysNP5mN9Kp3Oqy+bnbGOqom4FOdv2eGVMQ=</dsig:DigestValue>
+        <dsig:DigestValue>2dFSjy4bfoZccwso9GGnpqhZ/K/hXnCdBAF5U3Yu3qQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
