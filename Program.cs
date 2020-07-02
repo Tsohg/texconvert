@@ -129,6 +129,9 @@ namespace texconvert
             string name = Path.GetFileName(file);
             string[] details = name.Split('-');
             if (details.Length > 2) throw new Exception("Additional details detected.");
+            if (details.Length == 1) //no details found
+                details = new string[] { name, "" };
+
             ImageFormats.ImageEngineFormatDetails imageDetails;
             switch(details[1].Split('.')[0]) //A bit of a complicated way to only look at the part without file extension...
             {
