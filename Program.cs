@@ -27,6 +27,9 @@ namespace texconvert
         /// <param name="args">Accepts 2 full directory paths for input and output respectively.</param>
         static void Main(string[] args)
         {
+            foreach(string arg in args)
+                Console.WriteLine(arg);
+
             if(args.Length < 2)
             {
                 Console.Out.WriteLine("Incorrect Arguments. Usage of tool: texconvert inputDirectory outputDirectory");
@@ -57,8 +60,11 @@ namespace texconvert
 
                 List<string> files = new List<string>();
                 DirectoryInfo di = new DirectoryInfo(inPath);
-                DirectoryInfo[] dirs = di.GetDirectories();
-                foreach (var dir in dirs)
+
+                List<DirectoryInfo> directoriesToCheck = new List<DirectoryInfo>(di.GetDirectories());
+                directoriesToCheck.Add(di);
+
+                foreach (var dir in directoriesToCheck)
                 {
                     FileInfo[] fi = dir.GetFiles();
                     foreach (FileInfo f in fi)
@@ -76,18 +82,19 @@ namespace texconvert
                         }
                         catch(Exception e)
                         {
-                            Console.Out.WriteLine("Conversion of file {" + index + "/" + files.Count + "} " +
+                            Console.WriteLine("Conversion of file {" + index + "/" + files.Count + "} " +
                                 Path.GetFileName(file) + " failed with message: " + e.Message);
                         }
                         index++;
                     }
                     files.Clear();
                 }
-                Console.Out.WriteLine("Done.");
+                Console.WriteLine("Done.");
             }
             catch (Exception e)
             {
-                Console.Out.WriteLine(e.Message);
+                Console.WriteLine(e.StackTrace);
+                Console.WriteLine(e.Message);
             }
             Console.Read(); //debug purposes
         }

@@ -32,3 +32,4 @@ C:\Users\Nathan\source\repos\texconvert\texconvert\obj\Release\texconvert.applic
 C:\Users\Nathan\source\repos\texconvert\texconvert\obj\Release\texconvert.csproj.CopyComplete
 C:\Users\Nathan\source\repos\texconvert\texconvert\obj\Release\texconvert.exe
 C:\Users\Nathan\source\repos\texconvert\texconvert\obj\Release\texconvert.pdb
+C:\Users\Nathan\source\repos\texconvert\texconvert\obj\Release\texconvert.csproj.AssemblyReference.cache
