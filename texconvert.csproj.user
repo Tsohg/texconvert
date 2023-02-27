@@ -14,7 +14,7 @@
     <EnableSecurityDebugging>false</EnableSecurityDebugging>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <StartArguments>"D:\msys2\home\Nathan\WooHoo\\" "D:\msys2\home\Nathan\dbgPngToDDS\\" rev</StartArguments>
+    <StartArguments>"D:\msys2\home\Nathan\msys2_file_backup\unbubbled\\" "D:\msys2\home\Nathan\dbg\\"</StartArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <StartArguments>

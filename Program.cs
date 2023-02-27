@@ -57,26 +57,39 @@ namespace texconvert
 
                 List<string> files = new List<string>();
                 DirectoryInfo di = new DirectoryInfo(inPath);
-                FileInfo[] fi = di.GetFiles();
-                foreach (FileInfo f in fi)
+                DirectoryInfo[] dirs = di.GetDirectories();
+                foreach (var dir in dirs)
                 {
-                    if (Path.GetExtension(Path.Combine(inPath, f.Name)) != target)
-                        continue;
-                    files.Add(Path.Combine(inPath, f.Name));
-                }
-                int index = 1;
-                foreach (string file in files)
-                {
-                    conversion(file, inPath, outPath, ref index, files.Count);
-                    index++;
+                    FileInfo[] fi = dir.GetFiles();
+                    foreach (FileInfo f in fi)
+                    {
+                        if (Path.GetExtension(f.FullName) != target)
+                            continue;
+                        files.Add(f.FullName);
+                    }
+                    int index = 1;
+                    foreach (string file in files)
+                    {
+                        try
+                        {
+                            conversion(file, dir.FullName, outPath, ref index, files.Count);
+                        }
+                        catch(Exception e)
+                        {
+                            Console.Out.WriteLine("Conversion of file {" + index + "/" + files.Count + "} " +
+                                Path.GetFileName(file) + " failed with message: " + e.Message);
+                        }
+                        index++;
+                    }
+                    files.Clear();
                 }
                 Console.Out.WriteLine("Done.");
-                //Console.Read(); //debug purposes
             }
             catch (Exception e)
             {
                 Console.Out.WriteLine(e.Message);
             }
+            Console.Read(); //debug purposes
         }
 
         public delegate void ConversionDel(string file, string inPath, string outPath, ref int index, int total);
@@ -109,7 +122,6 @@ namespace texconvert
             string pathNew = Path.Combine(outPath, fNewName);
             string extNew = pathNew += ".png";
 
-            //save file.
             FileStream fs = new FileStream(extNew, FileMode.Create);
             enc.Save(fs);
             fs.Close();
@@ -130,7 +142,7 @@ namespace texconvert
             string[] details = name.Split('-');
             if (details.Length > 2) throw new Exception("Additional details detected.");
             if (details.Length == 1) //no details found
-                details = new string[] { name, "" };
+                details = new string[] { name, "" }; //give the array a new slot with nothing in it to force DXT5 since it has no metadata about what the file was originally.
 
             ImageFormats.ImageEngineFormatDetails imageDetails;
             switch(details[1].Split('.')[0]) //A bit of a complicated way to only look at the part without file extension...

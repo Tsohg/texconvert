@@ -24,7 +24,6 @@ C:\Users\Nathan\source\repos\texconvert\texconvert\bin\Debug\ko\System.Windows.I
 C:\Users\Nathan\source\repos\texconvert\texconvert\bin\Debug\ru\System.Windows.Interactivity.resources.dll
 C:\Users\Nathan\source\repos\texconvert\texconvert\bin\Debug\zh-Hans\System.Windows.Interactivity.resources.dll
 C:\Users\Nathan\source\repos\texconvert\texconvert\bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll
-C:\Users\Nathan\source\repos\texconvert\texconvert\obj\Debug\texconvert.csprojAssemblyReference.cache
 C:\Users\Nathan\source\repos\texconvert\texconvert\obj\Debug\texconvert.csproj.CoreCompileInputs.cache
 C:\Users\Nathan\source\repos\texconvert\texconvert\obj\Debug\texconvert.csproj.CopyComplete
 C:\Users\Nathan\source\repos\texconvert\texconvert\obj\Debug\texconvert.exe
@@ -33,3 +32,4 @@ C:\Users\Nathan\source\repos\texconvert\texconvert\bin\Debug\texconvert.exe.mani
 C:\Users\Nathan\source\repos\texconvert\texconvert\bin\Debug\texconvert.application
 C:\Users\Nathan\source\repos\texconvert\texconvert\obj\Debug\texconvert.exe.manifest
 C:\Users\Nathan\source\repos\texconvert\texconvert\obj\Debug\texconvert.application
+C:\Users\Nathan\source\repos\texconvert\texconvert\obj\Debug\texconvert.csproj.AssemblyReference.cache
